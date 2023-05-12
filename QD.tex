@@ -1,0 +1,98 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+\setcounter{secnumdepth}{2}
+
+\usepackage[normalem]{ulem}
+
+\title{\Large Challenging misinformation with quantitative derealization}
+\author{Conrad sen Kyne}
+\date{}
+
+\everymath{\displaystyle}
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Introduction}
+
+\hspace{\parindent}Numbers are a very easy thing to trust. They are a fundamental extension of our alphabet. With numbers, we can talk about rates, percentages, and physics. Math is arguably one of the most important academic subjects to exist, providing us with tools to analyze facets of reality, society, and even sometimes philosophy, such as through Godel's Incompleteness Theorems.\\
+
+Numbers are also very easy to construct. Every character represents a unique value, and every string of characters does as well. And, if two strings of characters do not match exactly, then we know that the values of the two numbers are also different (except in special cases like $12$ and $012$, or $9$ and $9.0$). In general, numbers are easy to read and compare as opposed to words, where the order of the character set and the construction of words is more arbitrary.\\
+
+But there's a challenge humans face when \textit{interpreting} numbers. Just like how we learn words through association with the objects or concepts they represent, we learn numbers (at first) through associating them with abstract representations of a quantity, such as groups of dots or familiar objects like ladybugs or apples. When numbers become multiple digits, we shift focus away from exact quantity and start to focus on the pattern of counting. If you can count to $10$, you know the order of the character set, and from there it gets much easier to generalize. By the time you can count to $100$, you probably have all the tools you need to count forever.\\
+
+Another strategy for expressing numbers, and a crucial part of mathematics, is comparison. When we teach about multi-digit numbers, we often demonstrate using "groups" of ones, tens, hundreds, and so on. These groups often use direct quantity association, but in a more subtle way. Instead of ten dots, for example, we might use a solid bar whose length matches the length pf ten dots. Then for a hundred, we can use a square whose sides match the length of ten dots. We learn through methods like this how to perceive the relative value of two numbers, and the precise representation of the quantity starts to become less important. It's such a powerful representation, some projects like \href{https://mkorostoff.github.io/1-pixel-wealth/}{this} use it to demonstrate scale in a simple but emotionally-resonant way.
+
+\subsection*{A solid base}
+
+\hspace{\parindent}We are so used to $0$ through $9$ that to some it doesn't occur to them that this system can be generalized. We have binary and hexadecimal used in computing, and ancient civilizations have used bases like $12$ and even $60$. The simplest base is unary, commonly represented as tallies, such as those carved into the Ishango bone (the oldest known numerical record). When we teach children to associate $0$ through $9$ with exact quantities, what we are actually doing is \textit{translating} the unary representation into base $10$.\\
+
+One of the coolest hidden features of base systems is their divisibility tests. For example, take a number like $126$. Add up all the digits, $1 + 2 + 6 = 9$. Finally, ask: "Is this digit sum divisible by 9?" It is, so we can conclude that the number $126$ is itself divisible by $9$. But this property is a bit different, in say, base $16$. Instead of asking if the digit sum is divisible by $9$, we ask if it is divisible by $15$. In any base $N$, we can use digit sums to determine if the number is divisible by $N-1$. With a bit of workshopping, you can use a generalized method to test if a number is divisible by any integer between $2$ and $N-1$.\\
+
+Basae $10$ has its drawbacks. It's very easy to learn to count by $2$ or $5$, and also very easy to tell if a number is divisible by $2$ or $5$ by simply looking at the last digit. But I would wager that most people struggle to count quickly by $3$ and $7$ - so much so that it changes the way we think about those numbers logically and even emotionally. Not sure how it could have an \textit{emotional} impact? I draw your attention to a popular habit: when changing the volume on your TV or computer, do you ever find yourself "rounding up" to a number ending in $2$, $5$, or $0$? That's the influence of base $10$ on your life. Those numbers just \textit{feel} better.
+
+\subsection*{The emotion of a number}
+
+\hspace{\parindent}In the English language, words have both a denotation and a connotation. The denotation is essentially its definition, while connotation is the implicit emotionality of the word. For example, both a group and a clique have the same denotation. But a clique implies more about the structure and behavior of a group, sometimes in a negative way. Technically group and clique can be synonyms, but it depends on context.\\
+
+The denotation of a number is simple: it is the quantity that the number represents. Always. Connotation, however, is more volatile and subjective. It's not enough to know the quantity, we also need to know what object or concept the quantity refers to. But even then, there's a lot of variance. For example, say you are hungry. If someone offered you $1$ orange, you might respond positively. But what if you had $15$ oranges, only to discover that $14$ had gone rotten? Now you "only" have $1$ orange, which is negative. The number $1$ inherently lacks emotionality but gains it through application.\\
+
+Let's fuzz things up a bit more. Say you have $14$ oranges, and $7$ of them go rotten. You now have $7$ left. So is $7$ good or bad? Obviously losing $7$ is bad, but having $7$ might still be okay. After all, you only lost half (this sentence implying something about the relationship between $14$ and $7$). You might be thinking, "Wait. These oranges are \textit{rotting}. You're \textit{losing} them. Don't those decide the connotation, rather than the number in relation to it?" Not necessarily. If you only lost $1$, it might be insignificant enough to not elicit an emotional response at all. We can even say that losing something is not necessarily negative, such as "He was rude to me so I lost his number." Because of this, it is safe to say that connotation is heavily influenced by context (true of any word, really). But the English language, for example, is not entirely dependent on context like numbers are.
+
+\subsection*{Frame it til you maim it}
+
+\hspace{\parindent}When someone shares a "fake" number, such as an incorrect statistic, the purpose is to elicit a desired emotional response that makes the argument resonate. So the number must be believable, so as to not draw suspicion to the argument and ultimately discredit it. If a number is somehow convincing, you're less likely to investigate the claim for yourself and uncover the truth. But arguments can also be framed with factual statistics in a way that may not follow from scientific analysis.\\
+
+Take, for example, the "$99.98\%$ COVID survival rate." At face value, this is hugely positive. It is used to argue against measures such as lockdowns and mask mandates, and even to argue for herd immunity. In December 2020, Dr. Anthony Fauci predicted that between $70$ to $85\%$ of the US would need to be vaccinated to achieve herd immunity.\\
+
+Now...this is going to be a stretch. But \textit{let's assume} that COVID could only be caught once, and then you were immune (\textbf{Important: This is not the case. Even fully vaccinated people are still at risk of COVID infection}). So to achieve herd immunity, that means between $232.68$ and $282.54$ million total cases would occur. With a $99.98\%$ survival rate, that means between $4.65$ and $5.65$ million deaths. Over the course of 2020, 375000 people died of COVID. At the time of writing, approximately halfway through 2022, a total of 992000 deaths are reported. So if we say that the average deaths per year are about 396000 (and let's be clear, this average is not a good metric) then it will take between 9 to 12 more years to reach herd immunity.\\
+
+In this example, I am intentionally framing the 99.98\% survival rate in this way to counter its original positive connotation by demonstrating that \textit{even if COVID were not nearly as bad as it is, there is more to the story than just the percentage}. We would still face over 1000 deaths per day and hospital overload. If we extended this analysis to the rest of the world, a total of 110 to 133 \textit{million} people would die. Again...if immunity worked like chicken pox.\\
+
+The strategy that I have employed is what I call \underline{quantitative derealization} - the act of consciously arguing away the connotation of the number. I took the following steps to do so:
+
+\begin{itemize}
+\item Identify the connotation of the number
+\item Identify the goal of the use of this number
+\item Frame the number with additional numbers and information
+\item Interrogate the original number through application
+\item Assess the connotation of the new framing
+\end{itemize}
+
+This can have a few effects. It can reduce, eliminate, or even entirely reverse the original connotation. It can demonstrate the subjectivity of the given analysis, and provide insights into how that analysis may be deepened. It might even change someone's mind.
+
+\subsection*{DIY}
+
+\hspace{\parindent}It's not hard to employ this strategy yourself, as long as you do due diligence. In short, establish context, and ask yourself clarifying questions like:
+
+\begin{itemize}
+\item What is the goal of this framing?
+\item What does this framing imply?
+\item Is the number real or fabricated? Does this make it easier or harder to derealize?
+\item How might my reframing actually affirm the original framing?
+\item Is the best path to reduce, eliminate, or reverse the connotation? (In general, if you are not confident you can reverse, then eliminate, otherwise reduce)
+\item What is the most important new number in your derealization? How might that be challenged?
+\end{itemize}
+
+After you have constructed your argument, you can project further! Examine your argument for its own vulnerabilities, and try to see what it takes to derealize your derealization.
+
+\subsection*{What's the point?}
+
+\hspace{\parindent}It's not enough to say "do your research" if someone is sure they have. It's not enough to cry foul and point to reliable sources. This is because, in my opinion, the way we consider numbers is fundamentally different than other aspects of language. We need to learn to recognize the role of real but misleading numbers in framing arguments, and challenge the root emotionality of the numbers being shared. I think if enough people were actively doing this, it would help combat the spread of misinformation and leave people less mystified by statistics. In the long run, it could change the way we as a society navigate mathematics. My personal hope is that it will encourage people to do more math and more research, always asking, "Is this enough? Am I convinced?"\\
+
+Quantitative derealization can be a neutral act, a force for good, or a tool for propaganda. It falls on the user to decide how they will use it. But inevitably, critical anlysis will always lead to the truth.
+
+\end{document}
