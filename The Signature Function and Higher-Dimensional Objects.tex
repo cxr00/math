@@ -1,0 +1,390 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+\setcounter{secnumdepth}{2}
+
+\usepackage[normalem]{ulem}
+
+\title{\Large The Signature Function and Higher-Dimensional Objects}
+\author{Conrad sen Kyne}
+\date{}
+
+\everymath{\displaystyle}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textbf{Abstract}
+\end{center}
+
+\noindent The signature function is discussed in more depth. We view the consequences of some definitions of matrices. A right near-ring is discovered which is closely related to the signature near-ring. Finally, I show a generalization of the signature function to 3D matrices, and discover some very smooth formulas for several one-beginning cubes. $N$-dimensional matrices are defined, with a corresponding generalization of the signature function. Finally, various constructions are examined.
+
+\tableofcontents
+
+\pagebreak
+
+\section{The signature function and matrices}
+
+\subsection{Matrix operations}
+
+\noindent Before we explore matrices in more detail, it is important to define the matrix operations which we will be using.\\
+
+\noindent The set of matrices forms a group under the following abelian addition operation:
+
+$$ (M + N) (n, y) = M(n, y) + N(n, y) $$
+
+\noindent The set of matrices also forms a monoid under the following multiplication operation:
+
+$$ MN(n, y) = \sum_{k=0}^{\infty} M(n, k) \cdot N(k, y) $$
+
+\noindent This operation is slightly different than traditional matrix multiplication, in that it does not have dimensional constraints. We assume that each matrix is padded with zeroes, so as to make either addition or multiplication possible. \\
+
+\noindent Sequences may be considered as scalars for the purpose of multiplication by matrices. This multiplication along with matrix addition results in a bimodule.
+
+$$ dM(n, y) = \sum_{k=0}^{y} d_k \cdot M(n, y-k) $$
+
+\subsection{The signature function over matrices}
+
+\noindent The signature function over a matrix is performed via antidiagonal summation. Because of how varied matrices can be, the result of the signature function on a matrix will not necessarily begin with 1.
+
+$$ F_M (n) = \sum_{k=0}^{n} M(n-k, k) $$
+
+\noindent Scalar multiplication is linear over $F$ with respect to matrix addition.
+
+$$ F_{dM + gN} = dF_M + gF_N$$
+
+\subsection{Power triangles}
+
+\noindent The power triangles are a subset of matrices with some interesting properties. They are constructed with a sequence $d$ like so:
+
+$$ T_d (n, y) = d_y^n$$
+
+\noindent These matrices are "one-beginning", meaning $T_d(0, 0) = 1$ so the signature function always yields a one-beginning sequence. Power triangles are the canonical one-beginning matrices, and have the following identity:
+
+$$ F_{T_d} = F_d$$
+
+\noindent The following shorthand will be used to simplify future notation:
+
+$$F^{-1}(F_{T_d}) \rightarrow F^{-1}_{T_d}$$
+
+\noindent  T is closed under matrix multiplication. Multiplication of power triangles also yields interesting signatures:
+
+$$ F^{-1}_{T_a \otimes T_b} = \sum_{k=0}^{\infty} a_k b^k$$
+
+\noindent Power triangles have a very interesting relationship to signature addition through subtraction and \textbf{scalar division}, which is defined as:
+
+$$\frac{T_d}{g} (n) = \frac{d^n}{g} $$
+
+\noindent Then we arrive at signature addition in an interesting way:
+
+$$\sum_{k=0}^{n} \frac{T_d - T_g}{d - g} (k + 1, n-k) = F_{d \oplus g} (n)$$
+
+\noindent Note that when $d = g$ exactly, this algorithm yields $0/0$, but the limit as $g$ approaches $d$ is still $F_{d \oplus g}$. The closed form using sequences instead of matrices is very similar:
+
+$$ \sum_{k=0}^{n} \frac{d^{k+1} - g^{k+1}}{d - g}(n-k) = F_{d \oplus g} (n)$$
+
+\noindent Signature convolution is constructed by convolving the antidiagonal with the signature function of $g$:
+
+$$\sum_{k=0}^{n} T_d (n-k, k) \cdot F_g (n-k) = F_{d \circ g}(n)$$
+
+\subsection{The power triangle monoid}
+
+\noindent $(T, \otimes)$ is closed (as is the set of one-beginning matrices) and produces an interesting homomorphism:
+
+$$ T_a \otimes T_b = T_{a * b}$$
+
+\noindent Where the operation $*$ is defined as:
+
+$$a * b = \sum_{k=0}^{\infty} a_k b^k$$
+
+\noindent This associative operation forms a monoid with identity element $x$. There are also some interesting results when multiplying by $x^n$:
+
+$$x^n * d = d^n$$
+
+$$d * x^n = A_d^n$$
+
+\noindent Where $A$ is the aeration function.
+
+\subsection{Another near-ring}
+
+\noindent Together with sequence addition, the power triangle monoid forms a right near-ring as multiplication distributes over addition on the right.
+
+\begin{align*}
+(a + b) * c &= \sum_{k=0}^{\infty} (a + b)_k c^k\\
+&= \sum_{k=0}^{\infty} (a_k + b_k) c^k\\
+&= \sum_{k=0}^{\infty} a_k c^k + b_k c^k\\
+&= \sum_{k=0}^{\infty} a_k c^k + \sum_{k=0}^{\infty} b_k c^k\\
+&= a*c + b*c
+\end{align*}
+
+\noindent When the left operand is a number (ie a single-digit sequence) then it absorbs:
+
+$$n * a = n$$
+
+\noindent This includes $0$, which also only absorbs on the left. This is a simple consequence of the definition of multiplication:
+
+$$ n * a = \sum_{k=0}^{\infty} n_k a^k = n \cdot a^0 + 0 \cdot a^1 + 0 \cdot a^2 + ... = n$$
+
+\noindent (The fact that 0 does not absorb on the right may be viewed as a side effect of the implicit definition of $0^0 = 1$.)\\
+
+\noindent Due to left absorption, every number is also idempotent:
+
+$$ n * n = n$$
+
+\noindent This operation shares an interesting connection to signature multiplication through the following identity:
+
+$$a * bx = \sum_{k=0}^{\infty} a_k (bx)^k = \frac{b \circ a}{b}$$
+
+\noindent There is a notable exception to this formula, and that is when $b = 0$:
+
+$$\frac{0 \circ a}{0}$$
+
+\noindent Now here's where things get funky; Because we have previously implied that $0^0 = 1$, we are also implying that $\frac{0}{0} = 1$. This creates a rather funny cancellation:
+
+$$\frac{0 \circ a}{0} = \frac{0 \cdot \sum_{k=0}^{\infty}  0^k x^k a_k}{0} = \sum_{k=0}^{\infty} 0^k x^k a_k = a_0$$
+
+\noindent This creates an interesting relationship between the signature near-ring and this new right near-ring:
+
+$$\sum_{k=0}^{n}{\frac{a^{k+1} - b^{k+1}}{a-b}}(n-k) = F_{a \oplus b}(n)$$
+
+$$a * bx = \frac{b \circ a}{b}$$
+
+\section{The signature function in higher dimensions}
+
+\subsection{Canonical one-beginning objects}
+
+\noindent While the signature function has been performed on both signatures and matrices, it can also be performed on 3D matrices. Take, for example, the following construction:
+
+$$P_d (r_0, r_1, r_2) = d_{r_2}^{r_0 + r_1}$$
+
+\noindent This is the canonical one-beginning object in three dimensions, a power cube. Then the signature function defined over such a cube is given by:
+
+$$F_{P_d} (n) = \sum_{r_0 + r_1 + r_2 = n} P_d(r_0, r_1, r_2) = F_{d \oplus d}(n)$$
+
+\noindent We can thus generalize the notion of a one-beginning object to $N$ dimensions and perform the signature function on it with relative ease:
+
+$$P_d^N (r_0, r_1, ..., r_{N-1}) = d_{r_{N-1}}^{r_0 + r_1 + ... + r_{N-2}}$$
+
+$$F_{P_d^N} (n) = \sum_{r_0 + r_1 + ... + r_{N-1} = n} P_d^N(r_0, r_1, ..., r_{N-1}) = F_{d^{(N-1)}}(n)$$
+
+\noindent Where $d^{(k)}$ is iterated signature addition given by:
+
+$$d^{(k)} = \underbrace{d \oplus d \oplus ... \oplus d}_{k \hspace{1mm} times}$$
+
+\noindent We may also iterate signature subtraction:
+
+$$d^{(-n)} = -d^{(n)}F_{d^{(n)}}$$
+
+\subsection{The power triangular prism}
+
+\noindent Let $W_d^3$ be given by the following function:
+
+$$W_d^3(n, y, t) = d_t^y$$
+
+\noindent We call this a \textbf{prism} because of the resultant shape of the matrix when each $n$-th element of $W_d^3$ corresponds to the same triangle. Then the following identity holds:
+
+$$F_{W_d^3} = F_{d \oplus 1}$$
+
+\noindent We may generalize this structure to N dimensions:
+
+$$W_d^N (r_0, ..., r_{N-1}) = d_{r_{N-1}}^{r_{N-2}}$$
+
+\noindent Then the signature function gives:
+
+$$F_{W_d^N} = F_{d \oplus 1^{(N-2)}}$$
+
+\pagebreak
+\subsection{The binomial simplex}
+
+\noindent We can construct a generalization of Pascal's triangle in three dimensions:
+
+$$C^3 (r_0, r_1, r_2) = \binom{r_0}{r_1} \binom{r_0 - r_1}{r_2}$$
+
+\noindent Then we have quite simply:
+
+$$F_{C^3} = F_{1, 2}$$
+
+\noindent Noting that $\binom{n}{k} = \{1, 1\}^{n}_k$, we can substitute any set of signatures $d = [d_0, d_1, ...]$ each of which are two digits in length, and define $C^N$ as:
+
+\iffalse
+$$C^3 (r_0, r_1, r_2) = d_{r_1}^{r_0} d_{r_2}^{r_0 - r_1}$$
+
+\noindent Then we have the identity:
+
+$$F_{C^3}^{-1} = d_0^2 + x d_1 (d_0 + 1)$$
+
+\noindent This may be generalized to $N$ dimensions, again fixing $d$ to some two-digit signature:
+\fi
+
+$$C^N (r_0, r_1, ..., r_{N-1}) = d^{r_0}_{0}(r_1) d^{r_1}_{1}(r_2) ... d^{r_{N-3}}_{N-2}(r_{N-2}) d^{r_{N-3} - r_{N-2}}_{N-1}(r_{N-1})$$
+
+\noindent Then the signature of the resultant prism is:
+
+\begin{align*}
+F^{-1}_{C^N} &= \sum_{k=0}^{N-3} x^k \cdot d_{k, 0} \cdot \prod_{t=0}^{k-1} d_{t, 1}\\
+& \quad + x^{N-2} \cdot d_{N-2, 0} \cdot d_{N-1, 0} \cdot \prod_{k=0}^{N-3} d_{k, 1}\\
+& \quad + x^{N-1} \cdot \left( d_{N-2, 0} \cdot d_{N-1, 1} + d_{N-2, 1} \right) \cdot \prod_{k=0}^{N-3} d_{k, 1}\\
+\end{align*}
+
+% OLD RECURSIVE FORMULA
+\iffalse
+\noindent Then we have another recursive function:
+
+$$I_0 = d^2_0 + x d_1 (d_0 + 1)$$
+
+$$I_n = d_0 + x d_1 I_{n-1}$$
+
+\noindent Then we have simply:
+
+$$F_{C^N}^{-1} = I_{N-3}$$
+\fi
+% END OLD RECURSIVE FORMULA
+
+\subsection{G-prisms}
+
+% UNNECESSARY LEGACY COMPUTATIONS
+\iffalse
+\noindent Let $g^n$ be a signature given by the following formula:
+
+$$g^n = \sum_{k=0}^{n} x^k$$
+
+\noindent And let $G_d$ be defined as follows:
+
+$$G_d (n, y, t) = g^n d_t^y$$
+
+\noindent Then the signature function produces very interesting results with structure that appears to share properties with signature addition. Below are some examples:
+
+\begin{center}
+\begin{tabular}{c c}
+d & $F_{G_d}^{-1}$\\
+1, 1 &  2, 1, -3, 0, 1\\
+1, 1, 1 & 2, 1, -2, -1, 0, 1\\
+1, 1, 1, 1 & 2, 1, -2, 0, -1, 0, 1\\
+2, 1 & 3, 0, -4, 1, 1\\
+1, 2 & 2, 2, -4, -1, 2\\
+2, 2 & 3, 1, -5, 0, 2\\
+1, -1 & 2, -1, -1, 2, 1\\
+2, -1 & 3, -2, -2, 3, -1\\
+-1, 1 & 0, 3, -1, -2, 1\\
+\end{tabular}
+\end{center}
+
+\noindent We can also define $g$ using the signature function:
+
+$$g^n = \sum_{k=0}^{n} F_z(k) \cdot x^k$$
+
+\noindent Where $z$ is some signature. This produces some interesting results as well:
+
+\begin{center}
+\begin{tabular}{c c c}
+d &\hspace{2mm} z & \hspace{4mm} $F^{-1}_{G_d}$\\
+1 & 1, 1 & ${2, 0, -2, 2, -2, 1}$\\
+2 & 1, 1 & ${3, -1, -3, 3, -3, 2}$\\
+3 & 1, 1 & $4, -2, -4, 4, -4, 3$\\
+1, 1 & 1, 1 & ${2, 1, -3, 1, -1, 0, 1}$\\
+2, -1 & 1, 1 & ${3, -2, -2, 4, -4, 3, -1}$\\
+1, -1 & 2, 1 & ${2, 0, -3, 5, -4, 2, -1}$\\
+\end{tabular}
+\end{center}
+
+\noindent The closed form for this structure is quite beautiful:
+
+$$F_{G_d}^{-1} = d \oplus 1 + xA_z^2 \cdot (1 - x \cdot (d \oplus 1))$$
+
+\noindent Given $N$ dimensions, we define the object as:
+
+$$G_d^N (r_0, r_1, ..., r_{N-1}) = g^{r_{N-3}} d_{r_{N-1}}^{r_{N-2}}$$
+
+\noindent Then the identity for the signature function over that object is:
+
+$$F_{G_d^{N}}^{-1} = d \oplus 1^{(N-2)} + xA_g^2 \cdot (1 - x \cdot (d \oplus 1^{(N-2)}))$$
+
+\noindent We may generalize a step further, though our notation will get a bit dense. First,
+
+\noindent Finally, we have a recursive function with a familiar base case:
+
+\begin{align*}
+R_0 &= d \oplus 1^{(N-2)}\\ % + \sum_{k=1}^{\infty} g_0(k-1) \cdot x^{2k-1} \cdot (1 - x \cdot (d \oplus 1^{(N-2)}))\\
+R_n &= R_{n-1} \oplus xA_{g_{n-1}}^2
+\end{align*}
+
+\noindent Then we have, quite simply:
+
+$$F_{G_d^N}^{-1} = R_{N-2}$$
+\fi
+% END UNNECESSARY LEGACY CALCULATIONS
+
+ Let $d$ and $g$ be sets a signatures, with $N = |d|$ and $K = |g|$. Then let $g_n^r$ be defined as follows:
+
+$$g_n^r = \sum_{k=0}^{r} F_{g_n}(k) \cdot x^k$$
+
+\noindent Next, define $G$ as follows:
+
+$$G (r_0, r_1, ..., r_{N+K-1}) = \left(g_{0}^{r_0} g_{1}^{r_1} ... g_{K-1}^{r_{K-1}} d_{0}^{r_{K}} d_{1}^{r_{K+1}} ... d_{N-1}^{r_{N+K-2}} \right)_{N+K-1}$$
+
+\noindent Then the signature of this prism is given by:
+
+$$F_G^{-1} = \bigoplus_{n=0}^{N-1} d_n \oplus \bigoplus_{k=0}^{K-1} (1 \oplus xA_{g_k}^2)$$
+
+\subsection{Arbitrary one-beginning objects}
+
+\noindent First, we can construct a function which takes two matrices, namely two power triangles, as arguments:
+
+$$T \times M (r_0, r_1, r_2) = (T(r_0) \otimes M (r_1)) (r_2)$$
+
+\noindent In this case $M(n)$ is the $n$-th row of $M$. Then we have quite simply:
+
+$$F_{T \times M} = F_T \otimes F_M$$
+
+\noindent Now let's assume arbitrary dimensions; $N, K > 2$ for $T$ and $M$ respectively:
+
+$$T \times M (r_0, r_1, ... r_{N + K - 2}) = \left( T(r_0, r_1, ..., r_{N - 2}) \otimes M (r_{N-1}, r_N, ..., r_{N + K - 3}) \right) (r_{N + K - 2})$$
+
+\noindent This is the \textbf{prismatic product} of $T$ and $M$. Then, identically to the two-dimensional case, we have:
+
+$$F_{T \times M} = F_T \otimes F_M$$
+
+\noindent If T and M are one-beginning, we also have:
+
+$$F_{T \times M}^{-1} = F_T^{-1} \oplus F_M^{-1}$$
+
+\subsection{Higher-dimensional signature convolution}
+
+\noindent Suppose we have the the following prism:
+
+$$T = T_{g_0} \times ... \times T_{g_{N-2}}$$
+
+\noindent Then we can define a product over the general signature function:
+
+$$\sum_{r_0 + ... + r_{N-1} = n} T (r_0, ... , r_{N-1}) \cdot F_{s} (r_0) =F_{T \circ s}(n) $$
+
+\noindent Much like in two dimensions, we are multiplying the specific element of the product by the $r_0$-th element of $F_s$. But, we can take this a step further. Suppose we have instead $N-2$ signatures in $S$. Then the summation is instead:
+
+$$\sum_{r_0 + ... + r_{N-1} = n} T(r_0, ... , r_{N-1}) \cdot \prod_{k=0}^{N-2} F_{S_k} (r_k) = F_{T \circ S}(n) $$
+
+\noindent Then signature convolution gives the following identity:
+
+$$T \circ S = \bigoplus_{k=0}^{N-2} g_k \circ S_k$$
+
+\noindent This is the \textbf{signature dot product}. It reduces the signature function over an arbitrary-dimensional prismatic object to the signature sum of signature convolutions. This means a prismatic object does not need to be constructed for its signature to be computed; and conversely, every signature may be seen as representative of the traversal of an object of at least two dimensions.
+
+\section{Conclusion}
+
+There is plenty to explore of the signature function in higher dimensions. Repeatedly, we see the natural appearance of signature addition in the one-beginning forms shown. We also see the appearance of iterated signature addition, something not seen at all in exploration of one-beginning sequences. This additional structure is promising, as it makes signature addition a more fundamental consequent of the signature function.\\
+
+\noindent The operations that emerge from these higher-dimensional objects are not the end. The next step forward is to search for a continuous generalization of the signature function. If such a function does exists, then I predict there will also be a canonical one-beginning continuous object, and that signature addition will emerge once again.
+
+\end{document}

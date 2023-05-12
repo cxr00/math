@@ -1,0 +1,370 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\setcounter{secnumdepth}{3}
+
+\title{\Large Positional numeral systems with sequences as the base}
+\author{Conrad sen Kyne}
+\date{}
+
+\everymath{\displaystyle}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textbf{Abstract}
+\end{center}
+
+\noindent The mechanics of the positional numeral system are reviewed. Its definition is gradually expanded, first to the factorial base, then to Fibonacci coding, to the recursive signature function, and finally to any increasing one-beginning natural sequence. Then various edge cases are explored where the sequence base displays some irregular property.
+
+\tableofcontents
+
+\pagebreak
+
+\section{Basic Counting Methods}
+
+\subsection{Positional numeral system}
+
+We take for granted how useful our system of counting is. The \textbf{positional numeral system} is a way of cleanly representing any integer using a \textit{base} $b$ and a \textit{digitation} $\{n_0, n_1, ..., n_p\}$. In our \textbf{base-ten system}, we separate numbers by ones, tens, hundreds, thousands, and so on, each represented by a different digit. Take, for example, the number 1482. We can partition this number like so:
+
+\begin{equation}1482 = 1000 + 400 + 80 + 2\end{equation}
+
+\noindent What is happening here is each digit from right to left is multiplied by progressively higher powers of ten. We can expand this equation further to get:
+
+\begin{equation}1482 = \textbf{1} \cdot 10^3 + \textbf{4} \cdot 10^2 + \textbf{8} \cdot 10^1 + \textbf{2} \cdot 10^0\end{equation}
+
+\noindent Formally, the positional numeration of a set $N_b = \{b, \{n_0, n_1, ..., n_p\}\}$ is given by \begin{equation}\sum_{k=0}^{p} n_k b^k\end{equation}
+
+\noindent Let's try counting in a different base. Let's try base-3, or ternary. Take a look at this table:
+
+\begin{center}
+\begin{tabular} {c c c c c}
+$b^k$ & $\rightarrow$ & 9 & 3 & 1\\
+$N_{10}$\\
+$\downarrow$\\
+1 & & & & 1\\
+2 & & & & 2\\
+3 & & & 1 & 0\\
+4 & & & 1 & 1\\
+5 & & & 1 & 2\\
+6 & & & 2 & 0\\
+7 & & & 2 & 1\\
+8 & & & 2 & 2\\
+9 & & 1 & 0 & 0\\
+10& & 1 & 0 & 1\\
+11& & 1 & 0 & 2\\
+12& & 1 & 1 & 0\\
+13& & 1 & 1 & 1\\
+14& & 1 & 1 & 2\\
+15& & 1 & 2 & 0\\
+16& & 1 & 2 & 1\\
+17& & 1 & 2 & 2\\
+18& & 2 & 0 & 0\\
+19& & 2 & 0 & 1
+\end{tabular}
+\end{center}
+
+\noindent Note that each number's base-ten representation ($N_{10}$) is computed by multiplying each digit by its corresponding power of 3. For example, the number $112_3$ is computed by:
+
+\begin{equation}112_3 = \textbf{1} \cdot 9 + \textbf{1} \cdot 3 + \textbf{2} \cdot 1 = 9 + 3 + 2 = 14\end{equation}
+
+\noindent Note that we are implicitly using base-ten to represent numbers whose base is not explicitly labelled.
+
+\subsection{Digit resolution}
+
+\noindent \textbf{Digit resolution} is the process of carrying a number to the next digit, then resetting the lower number to 0. In base-ten, this occurs when counting from 9 to 10; in base-2, from 1 to 10; and in octal, from 7 to 10. Some examples can be viewed below.
+
+$$2_2 \rightarrow 10_2$$
+$$120_2 \rightarrow 200_2 \rightarrow 1000_2$$
+$$8_8 \rightarrow 10_8$$
+$$84_8 \rightarrow 104_8$$
+$$C_{12} \rightarrow 10_{12}$$
+$$BC7_{12} \rightarrow C07_{12} \rightarrow 1007_{12}$$
+
+\subsection{Factorial base system}
+
+\noindent What if we could substitute a function in place of $b^k$? Well, it turns out one such function, the \textit{factorial} function, can do just that. Take a look at the following table:
+
+\begin{center}
+\begin{tabular}{c c c c c c c}
+$k!$ & $\rightarrow$ & 24 & 6 & 2 & 1 & 1\\
+$N_{10}$\\
+$\downarrow$\\
+1 & & & & & 1 & 0\\
+2 & & & & 1 & 0 & 0\\
+3 & & & & 1 & 1 & 0\\
+4 & & & & 2 & 0 & 0\\
+5 & & & & 2 & 1 & 0\\
+6 & & & 1 & 0 & 0 & 0\\
+7 & & & 1 & 0 & 1 & 0\\
+8 & & & 1 & 1 & 0 & 0\\
+9 & & & 1 & 1 & 1 & 0\\
+10& & & 1 & 2 & 0 & 0\\
+11& & & 1 & 2 & 1 & 0\\
+12& & & 2 & 0 & 0 & 0\\
+13& & & 2 & 0 & 1 & 0\\
+14& & & 2 & 1 & 0 & 0\\
+15& & & 2 & 1 & 1 & 0\\
+16& & & 2 & 2 & 0 & 0\\
+17& & & 2 & 2 & 1 & 0\\
+18& & & 3 & 0 & 0 & 0\\
+19& & & 3 & 0 & 1 & 0\\
+20& & & 3 & 1 & 0 & 0\\
+21& & & 3 & 1 & 1 & 0\\
+22& & & 3 & 2 & 0 & 0\\
+23& & & 3 & 2 & 1 & 0\\
+24& & 1 & 0 & 0 & 0 & 0\\
+\end{tabular}
+\end{center}
+
+\noindent Instead of the power function $b^k$, each digit is equivalent to $n_k k!$. 
+
+\noindent Notice, for example, that going from 23 to 24 in factorial involves the following resolution: \begin{equation} 3210_! + 1 = 3211_! \rightarrow 3220_! \rightarrow 3300_! \rightarrow 4000_! \rightarrow 10000_!\end{equation}
+
+\subsection{Fibonacci coding}
+
+\noindent What if instead of base-10 or the factorial base, we used a different function as the base? In this case, let's use the Fibonacci numbers, given by \begin{equation}F(0) = F(1) = 1 \quad F(n) = F(n-1) + F(n-2)\end{equation}
+
+\begin{center}
+\begin{tabular} {c c c c c c c c c}
+$F(k)$ & $\rightarrow$ & 13 & 8 & 5 & 3 & 2 & 1 & 1 \\
+$N_{10}$\\
+$\downarrow$\\
+1 & & & & & & & 1 & 0\\
+2 & & & & & & 1 & 0 & 0\\
+3 & & & & & 1 & 0 & 0 & 0\\
+4 & & & & & 1 & 0 & 1 & 0\\
+5 & & & & 1 & 0 & 0 & 0 & 0\\
+6 & & & & 1 & 0 & 0 & 1 & 0\\
+7 & & & & 1 & 0 & 1 & 0 & 0\\
+8 & & & 1 & 0 & 0 & 0 & 0 & 0\\
+9 & & & 1 & 0 & 0 & 0 & 1 & 0\\
+10 & & & 1 & 0 & 0 & 1 & 0 & 0\\
+11 & & & 1 & 0 & 1 & 0 & 0 & 0\\
+12 & & & 1 & 0 & 1 & 0 & 1 & 0\\
+13 & & 1 & 0 & 0 & 0 & 0 & 0 & 0\\
+\end{tabular}
+\end{center}
+
+\noindent This is similar to counting in binary, except it \textit{resolves the digit pattern 1 to 10 and 11 to 100}. Observe what happens when counting from 12 to 13:
+
+\begin{equation}101010_F + 1 = 101011_F \rightarrow 101100_F \rightarrow 110000_F \rightarrow 1000000_F\end{equation}
+
+\noindent We can use this table to calculate the base-10 value of any number on the table. For example, the value of $1010_F$ is calculated by \begin{equation}\textbf{1} \cdot 3 + \textbf{0} \cdot 2 + \textbf{1} \cdot 1 + \textbf{0} \cdot 1 = 3 + 1 = 4 \end{equation}
+
+\noindent The value of $101000_F$ is calculated by \begin{equation}\textbf{1} \cdot 8 + \textbf{0} \cdot 5 + \textbf{1} \cdot 3 + \textbf{0} \cdot 2 + \textbf{0} \cdot 1 + \textbf{0} \cdot 1  = 8 + 3 = 11\end{equation}
+
+\section{Alternate Counting Methods}
+
+\subsection{The signature function}
+
+\noindent To understand what is happening in the Fibonacci coding, let's look at a generalization of the Fibonacci function called the \textbf{recursive signature function}.
+
+\noindent The recursive signature function (or just the signature function for short) is defined as \begin{equation} F_d(0) = 1 \quad \quad F_d(n) = \sum_{k=0}^{n-1} F_d(n-1-k) d_k\end{equation}
+
+\noindent For example, $F_{\{1, 1\}}$ is the Fibonacci numbers and $F_{\{2, 1\}} = \{1, 2, 5, 12, 29, 70, ...\}$ is the Lucas numbers. The signature function reveals an exciting way to count similar to Fibonacci coding but for an arbitrary sequence $d$.
+
+\subsection{Signature numeration}
+
+\noindent Let's attempt to use the sequence $F_{\{1,1,2\}}$ to create a "coding" like the Fibonacci coding. First, the sequence is given by \begin{equation}F_{\{1,1,2\}} = \{1, 1, 2, 5, 9, 18, ...\}\end{equation}
+
+\noindent Observe the coding given below:
+
+\begin{center}
+\begin{tabular}{c c c c c c c c}
+$F_{\{1, 1, 2\}}(k)$ & $\rightarrow$ & 18 & 9 & 5 & 2 & 1 & 1\\
+$N_{10}$\\
+$\downarrow$\\
+1 & & & & & & 1 & 0\\
+2 & & & & & 1 & 0 & 0\\
+3 & & & & & 1 & 1 & 0\\
+4 & & & & & 1 & 1 & 1\\
+5 & & & & 1 & 0 & 0 & 0\\
+6 & & & & 1 & 0 & 1 & 0\\
+7 & & & & 1 & 1 & 0 & 0\\
+8 & & & & 1 & 1 & 1 & 0\\
+9 & & & 1 & 0 & 0 & 0 & 0\\
+10& & & 1 & 0 & 0 & 1 & 0\\
+11& & & 1 & 0 & 1 & 0 & 0\\
+12& & & 1 & 0 & 1 & 1 & 0\\
+13& & & 1 & 0 & 1 & 1 & 1\\
+14& & & 1 & 1 & 0 & 0 & 0\\
+15& & & 1 & 1 & 0 & 1 & 0\\
+16& & & 1 & 1 & 1 & 0 & 0\\
+17& & & 1 & 1 & 1 & 1 & 0\\
+18& & 1 & 0 & 0 & 0 & 0 & 0\\
+19& & 1 & 0 & 0 & 0 & 1 & 0\\
+20& & 1 & 0 & 0 & 1 & 0 & 0\\
+21& & 1 & 0 & 0 & 1 & 1 & 0\\
+22& & 1 & 0 & 0 & 1 & 1 & 1\\
+23& & 1 & 0 & 1 & 0 & 0 & 0\\
+\end{tabular}
+\end{center}
+
+\noindent Like Fibonacci coding, this is resolving digits, but according to the sequence $\{1, 1, 2\}$ rather than $\{1, 1\}$. For example, counting from 4 to 5 is done by $$111_{\{1,1,2\}} + 1 = 112_{\{1,1,2\}} \rightarrow 1000_{\{1,1,2\}}$$
+
+\noindent whereas counting from 8 to 9 is done by $$1110_{\{1,1,2\}} + 1 = 1111_{\{1,1,2\}} \rightarrow 1120_{\{1,1,2\}} \rightarrow 10000_{\{1,1,2\}}$$
+
+\noindent In general, the \textbf{signature numeration} of $N_d = \{d, \{n_0, n_1, ..., n_p\}\}$ is given by \begin{equation}\sum_{k=0}^{p} n_k F_d(k)\end{equation}
+
+\noindent For example, Fibonacci coding is the case where $d = \{1, 1\}$. Some more examples of this numeration:
+
+\begin{equation}F_{\{1, 1, 2\}} = \{1, 1, 2, 5, 9, ...\} \quad 11010_{\{1, 1, 2\}} = \textbf{1} \cdot 9 + \textbf{1} \cdot 5 + \textbf{0} \cdot 2 + \textbf{1} \cdot 1 + \textbf{0} \cdot 1 = 9 + 5 + 1 = 15\end{equation}
+
+\begin{equation}F_{\{2, 1\}} = \{1, 2, 5, 12, 29, ...\} \quad 2011_{\{2, 1\}} = \textbf{2} \cdot 12 + \textbf{0} \cdot 5 + \textbf{1} \cdot 2 + \textbf{1} \cdot 1 = 24 + 2 + 1 = 27\end{equation}
+
+\begin{equation}F_{\{2, 3\}} = \{1, 2, 7, 20, 61, ...\} \quad 1221_{\{2, 3\}} = \textbf{1} \cdot 20 + \textbf{2} \cdot 7 + \textbf{2} \cdot 2 + \textbf{1} \cdot 1 = 20 + 14 + 4 + 1 = 39\end{equation}
+
+\subsection{Arbitrary sequence numeration}
+
+\subsubsection{Conditions for sequence as a base}
+
+Instead of $F_{d}$, we can select an arbitrary discrete function $f$ which meets the following conditions:
+
+$$f(0) = 1$$
+$$f(n) \in \mathbb{N}$$
+$$f(n) >= f(n-1)$$
+
+\noindent In other words, any \textbf{increasing one-beginning natural sequence} may be used as a base.\\
+
+\noindent These sequences are a subset of the signature function, whose range is all one-beginning sequences, so we can refer to these sequences by their signature when convenient.
+
+\subsubsection{Base-\{2, 0, -1\}}
+
+For example, we can count in base-$\{2, 0, -1\}$. The sequence $F_{\{2, 0, -1\}}$ is given by:
+
+\begin{equation}F_{\{2, 0, -1\}} = \{1, 2, 4, 7, 12, 20, ...\}\end{equation}
+
+\noindent Then we can count in this base like so:
+
+\begin{center}
+\begin{tabular} {c c c c c c c c}
+$F_{\{2, 0, -1\}}(k)$ & $\rightarrow$ & 20 & 12 & 7 & 4 & 2 & 1\\
+$N_{10}$\\
+$\downarrow$\\
+1 & & & & & & & 1\\
+2 & & & & & & 1 & 0\\
+3 & & & & & & \textbf{1} & \textbf{1}\\
+4 & & & & & \textbf{1} & \textbf{0} & \textbf{0}\\
+5 & & & & & 1 & 0 & 1\\
+6 & & & & & \textbf{1} & \textbf{1} & \textbf{0}\\
+7 & & & & \textbf{1} & \textbf{0} & \textbf{0} & \textbf{0}\\
+8 & & & & 1 & 0 & 0 & 1\\
+9 & & & & 1 & 0 & 1 & 0\\
+10& & & & 1 & 0 & 1 & 1\\
+11& & & & \textbf{1} & \textbf{1} & \textbf{0} & \textbf{0}\\
+12& & & \textbf{1} & \textbf{0} & \textbf{0} & \textbf{0} & \textbf{0}\\
+13& & & 1 & 0 & 0 & 0 & 1\\
+14& & & 1 & 0 & 0 & 1 & 0\\
+15& & & 1 & 0 & 0 & 1 & 1\\
+16& & & 1 & 0 & 1 & 0 & 0\\
+17& & & 1 & 0 & 1 & 0 & 1\\
+18& & & 1 & 0 & 1 & 1 & 0\\
+19& & & \textbf{1} & \textbf{1} & \textbf{0} & \textbf{0} & \textbf{0}\\
+20& & \textbf{1} & \textbf{0} & \textbf{0} & \textbf{0} & \textbf{0} & \textbf{0}\\
+\end{tabular}
+\end{center}
+
+\noindent Notice the bolded sections which showcase the identity \begin{equation}F_{2, 0, -1}(n) = F_{2, 0, -1}(n-1) + F_{2, 0, -1}(n-2) + 1\end{equation}
+
+\subsection{Edge cases}
+
+\noindent Let's take a look at some special cases where counting follows some less intuitive rules.
+
+\subsubsection{Base-1}
+
+\noindent Base-1 is fairly simple: every digit either does not exist or is a 1, so we have \begin{equation}N_1 = \sum_{k=0}^{p} 1 = p + 1\end{equation}
+
+\noindent For example, $1111$ is $4$, $1111111$ is $7$, and $11$ is $2$. 
+
+\subsubsection{Sequences which converge}
+
+\noindent Suppose we select the sequence $f = \{1, 4, 7, 8, 8, 8, ...\}$ to serve as a base for numeration. Observe the behavior of counting in this base:
+
+\begin{center}
+\begin{tabular} {c c c c c c c c}
+$f(k)$ & $\rightarrow$ & 8 & 8 & 8 & 7 & 4 & 1\\
+$N_{10}$\\
+$\downarrow$\\
+1 & & & & & & & 1\\
+2 & & & & & & & 2\\
+3 & & & & & & & 3\\
+4 & & & & & & 1 & 0\\
+5 & & & & & & 1 & 1\\
+6 & & & & & & 1 & 2\\
+7 & & & & & 1 & 0 & 0\\
+8 & & & & 1 & 0 & 0 & 0\\
+9 & & & & 1 & 0 & 0 & 1\\
+10& & & & 1 & 0 & 0 & 2\\
+11& & & & 1 & 0 & 0 & 3\\
+12& & & & 1 & 0 & 1 & 0\\
+13& & & & 1 & 0 & 1 & 1\\
+14& & & & 1 & 0 & 1 & 2\\
+15& & & & 1 & 1 & 0 & 0\\
+16& & & 1 & 1 & 0 & 0 & 0\\
+17& & & 1 & 1 & 0 & 0 & 1\\
+18& & & 1 & 1 & 0 & 0 & 2\\
+19& & & 1 & 1 & 0 & 0 & 3\\
+20& & & 1 & 1 & 0 & 1 & 0\\
+21& & & 1 & 1 & 0 & 1 & 1\\
+22& & & 1 & 1 & 0 & 1 & 2\\
+23& & & 1 & 1 & 1 & 0 & 0\\
+24& & 1 & 1 & 1 & 0 & 0 & 0\\
+\end{tabular}
+\end{center}
+
+\noindent Notice that, similar to base-1, the digits with a value of 8 can only have a value of 1. This still satisfies the condition that \begin{equation}N_f = \sum_{k=0}^{p} n_k f(k)\end{equation}
+
+\noindent where, for example, $11000_f = 16$, $1010_f = 12$, etc. This behavior occurs for any $f$ which converges.
+
+\subsubsection{Sequences where f(n) = f(n-1) for some n}
+
+\noindent Suppose we select the sequence $f = \{1, 3, 7, 7, 13, ...\}$ to serve as a base for numeration. Observe the behavior of counting in this base:
+
+\begin{center}
+\begin{tabular} {c c c c c c c}
+$f(k)$ & $\rightarrow$ & 13 & 7 & 7 & 3 & 1\\
+$N_{10}$\\
+$\downarrow$\\
+1 & & & & & & 1\\
+2 & & & & & & 2\\
+3 & & & & & 1 & 0\\
+4 & & & & & 1 & 1\\
+5 & & & & & 1 & 2\\
+6 & & & & & 1 & 3\\
+\textbf{7} & & & \textbf{1} & \textbf{0} & \textbf{0} & \textbf{0}\\
+8 & & & 1 & 0 & 0 & 1\\
+9 & & & 1 & 0 & 0 & 2\\
+10& & & 1 & 0 & 1 & 0\\
+11& & & 1 & 0 & 1 & 1\\
+12& & & 1 & 0 & 1 & 2\\
+13& & 1 & 0 & 0 & 0 & 0\\
+14& & 1 & 0 & 0 & 0 & 1\\
+15& & 1 & 0 & 0 & 0 & 2\\
+16& & 1 & 0 & 0 & 1 & 0\\
+17& & 1 & 0 & 0 & 1 & 1\\
+18& & 1 & 0 & 0 & 1 & 2\\
+19& & 1 & 0 & 0 & 1 & 3\\
+\textbf{20}& & \textbf{1} & \textbf{1} & \textbf{0} & \textbf{0} & \textbf{0}\\
+\end{tabular}
+\end{center}
+
+\noindent Note that the digit resolves past the first 7 to the "highest" 7. This behavior would be similar for $f = \{1, 3, 7, 7, 7, 13,...\}$ or $f = \{1, 3, 7, 7, ..., 7, 13, ...\}$.
+
+\section{Conclusion}
+
+I hope that I have given this topic a proper treatment, even though there are some weaknesses to this method. For example, radix points do not work for sequences, so we are restricted to integer representations.\\
+
+\noindent Still, I think this method is interesting in its own right. Because the space of increasing one-beginning natural sequences is uncountably infinite, we may now access an uncountably infinite number of positional numeral systems with sequences as the base. Perhaps these new systems will show that our "normal" way of counting is a bit less special, but is part of something a lot more beautiful.
+
+\end{document}

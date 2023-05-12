@@ -1,0 +1,299 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+\setcounter{secnumdepth}{2}
+
+
+\title{\Large Recursive Signatures and the Signature Left Near-Ring}
+\author{Conrad sen Kyne}
+\date{}
+
+\everymath{\displaystyle}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textbf{Abstract}
+\end{center}
+
+A new characterization of the INVERT transform is given for the set of 1-beginning sequences. Its properties are canonized by a familiar algorithm. We construct an additive operation and explore the immediate consequences of the operation and its ability to streamline identity proving. Then we extend the parameters of the function to construct a multiplicative group which is left-distributive over the additive operation, forming a left near-ring. Finally we explore a peculiar algorithm with an interesting representation.
+
+\tableofcontents
+
+\section{Introduction}
+
+\subsection{The INVERT transform and the signature function}
+
+In Bernstein \& Sloane’s Some Canonical Sequences of Integers, the INVERT transform of a sequence a is the sequence b which satisfies \begin{equation}1 +  \sum_{n=1}^\infty b_n x^n = \frac{1}{1 - \displaystyle \sum_{n=1}^\infty a_n x^n}\end{equation}
+
+\noindent As formal power series over $R[[x]]$ this is simply \begin{equation}1 + bx = \frac{1}{1 - ax}\label{invert}\end{equation}
+
+\noindent By this algorithm we may define a function $F: D \rightarrow O$ where D is the set of sequences and O is the set of sequences which take the form $1 + bx$ (the "one-beginning" sequences). Though the name INVERT is a useful mnemonic for this formula, there is a recursive algorithm which computes this transform more quickly for a sequence $d \in D$ by \begin{equation}F_{d}(0) = 1 \qquad  F_{d}(n) = \sum_{k=1}^{n} F_{d}(n-k) \cdot d_{k-1} \end{equation}
+
+\subsection{The inverse signature function $F^{-1}$}
+
+\noindent We can compute its inverse $F^{-1} : O \rightarrow D$ by solving for $d$ in terms of $F_d$:
+
+\begin{align*}
+ F_{d}(n) &= \sum_{k=1}^{n} F_{d}(n-k) \cdot d_{k-1}\\
+F_{d}(n) &= F_d(0) \cdot d_{n-1} + \sum_{k=1}^{n-1} F_{d}(x-k) \cdot d_{k-1}\\
+F_{d}(n) &= d_{n-1} +  \sum_{k=1}^{n-1} F_{d}(n-k) \cdot d_{k-1}\\
+d_{n-1} &= F_{d}(n) - \sum_{k=1}^{n-1} F_{d}(n-k) \cdot d_{k-1}\tag{5\refstepcounter{equation}} \end{align*}
+
+\noindent From this, substituting $F_{d}^{-1}$ in place of $d$ and increasing the index yields \begin{equation}F_{d}^{-1}(n) = d_{n+1} - \sum_{k=1}^{n} d_{n-k} \cdot F_{d}^{-1}(k-1)\end{equation}
+
+\noindent With this new structure, INVERT is a less intuitive name. For this reason, I have elected to refer to this treatment as the \textbf{recursive signature function} or simply the signature function for short.
+
+\subsection{Antidiagonal summation and $x$ }
+
+It is well known that summation along the diagonals of Pascal's Triangle yields the Fibonacci numbers. This relationship has been explored in further detail by Hoggatt Jr \& Bicknell (see \textit{Diagonal Sums of Generalized Pascal Triangles}). In general, we may select a polynomial \textit{d} and sum along the \textit{n}-th diagonal to yield \begin{equation} F_{d}(n) = \sum_{k=0}^n d_{k}^{n-k}\end{equation}
+
+\noindent Additionally, we may describe $F_d$ as an infinite sum. To do this, we define the signature $x = [0, 1]$. Then the signature function is also computed by \begin{equation}F_d = \sum_{k=0}^{\infty} (d x )^k \qquad  F_d(n) = \sum_{k=0}^{n} (d x )_{n}^k\end{equation}
+
+\noindent There is also a convenient memoized formula for the convolution of two signature function sequences: \begin{equation}(F_a \otimes F_b)(n) = F_{a}(n) + \sum_{k=1}^{n} F_{a}F_b(n-k) \cdot b_{k-1}\end{equation}
+
+\subsection{Aerated sequences}
+
+For each d, we may describe an aeration $A_d$ where \begin{equation}A_d^a(an) = d_{n}\end{equation}
+
+\noindent This can transform [1,1] to [1,0,1], [1,2,1] to [1,0,0,2,0,0,1], etc. Then \begin{equation} \sum_{k=0}^{n} d_{k}^{n-ak} = F_{A_d^a}(n)\end{equation}
+
+\noindent Note that $a=1$ is the "identity" aeration.
+
+\subsection{Iterated signature function}
+
+The iteration of the signature function is given by $F_d^{(g)} = F_{F_d^{(g-1)}}$.
+
+\section{Signature Addition}
+
+\subsection{Convolution of 1-beginning sequences}
+
+The convolution of two sequences a and b is given by \begin{equation}ab_{n} = \sum_{k=0}^n a_{n-k}b_{k} = \sum_{k=0}^n b_{n-k}a_{k}\end{equation}
+
+\noindent In the set of 1-beginning sequences \textit{O}, convolution is a closed operation. This means that we may describe a homomorphism \begin{equation} F_a \otimes F_b = F(a \oplus b) \end{equation} for a binary operation $\oplus : D \times D \rightarrow D$ where $D$ is the set of integer sequences. By the definition of the INVERT transform, we have \begin{equation}F_a \otimes F_b = \frac{1}{(1-ax)(1-bx)} = \frac{1}{1-ax-bx+abx^{2}} \end{equation} and thus \begin{equation}a \oplus b = F^{-1}(F_a \otimes F_b) = a + b - abx\end{equation}
+
+\noindent To find an inverse, we solve $a + b - abx = 0$. If we factor out \textit{b}, we may substitute the reciprocal of $F_a$ for $(1-ax)$ to find that \begin{equation}b = -aF_a\end{equation}
+
+\noindent In addition to this inverse, note that \begin{equation}a \oplus F_a = a + 1 \quad \Rightarrow \quad a \oplus nF_a = a + n\end{equation}
+
+\noindent This describes an isomorphism to integer addition with identity 0, but is easily extended to the reals and complex numbers.
+
+\subsection{Internal applications}
+
+\noindent The information given by this group can help us quickly solve problems when they are portrayed in terms of their signatures. For example, we have that \begin{equation}F^{-1}(1-dx) = F^{-1}(\frac{1}{F_d}) = 0 \oplus d^{-1} = -dF_d\end{equation}
+
+\noindent or conversely \begin{equation}F^{-1}(1 + dx) = dF_{-d}\end{equation}
+
+\noindent Through this, we can quickly solve a more complex problem symbolically without relying on the explicit algorithm: \begin{equation}F^{-1}(1+aF_bx) = (aF_{b})F_{-aF_{b}} = aF_{b \oplus -aF_{b}} = aF_{b-a}\end{equation}
+
+\noindent When $a = 1$, we have \begin{equation}F^{-1}(1+F_{b}x) = F_{b-1}\end{equation} but we can substitute $F_{0}$  for 1, and reach the same solution in an albeit roundabout way:\begin{equation}F^{-1}(1 + F_{b}F_{0}x) \quad = \quad F_{b}F_{0-F_{b}} \quad = \quad F_{b \oplus -F_{b}} \quad = \quad F_{b-1}\end{equation}
+
+\noindent Another roundabout solution to this form of problem takes advantage of an almost distributive identity: \begin{equation}a \oplus (b-c) = a + a \oplus b - a \oplus c\end{equation}
+
+\noindent Which is used to solve $F^{-1}(1 + F_{a}F_{b}x)$: \begin{equation}F^{-1}(1+F_{a}F_{b}x) = F_{a}F_{b-F_{a}} = F_{a \oplus (b-F_{a})} = F_{a + a \oplus b - a \oplus F_{a}} = F_{a + a \oplus b - (a+1)} = F_{a \oplus b - 1}\end{equation}
+
+\noindent This isn't the best way to solve this problem, but it showcases the versatility of this construction. The simplest solution is given succinctly by \begin{equation}F^{-1}(1+F_{a}F_{b}x) = F^{-1}(1+F_{a \oplus b}x) = F_{a \oplus b - 1}\end{equation}
+
+\section{Signature Convolution}
+
+\subsection{Parameterized antidiagonal summation}
+
+If we elect to treat each term of antidiagonal summation as the product of itself and 1, then we can rephrase it in terms of the signature function as \begin{equation}\sum_{k=0}^{n} d_{k}^{n-k} \cdot F_{1}(n-k) = F_{d}(n)\end{equation}
+
+\noindent From this, we can experiment with alternative signatures to 1. Using 0, for example, yields \begin{equation}\sum_{k=0}^{n} d_{k}^{n-k} \cdot F_{0}(n-k) = F_{0}(n)\end{equation}
+
+\noindent And with 2 we get \begin{equation}\sum_{k=0}^{n} d_{k}^{n-k} \cdot F_{2}(n-k) = F_{2d}(n)\end{equation}
+
+\noindent And finally with \textit{p} we get \begin{equation}\sum_{k=0}^{n} d_{k}^{n-k} \cdot F_{p}(n-k) = F_{pd}(n)\end{equation}
+
+\noindent With this we have multiplicative qualities akin to scalar multiplication, and nullification by the identity of signature addition. By describing this transformation as a binary operation $\circ : D \times D \rightarrow D$, we can focus on the signature of the solution rather than the entire solution. Thus we define this operation as the satisfaction of \begin{equation}F_{a \circ b}(n) = \sum_{k=0}^{n} a_{k}^{n-k} \cdot F_{b}(n-k)\end{equation} which as a series is \begin{equation}F_{a \circ b} = \sum_{k=0}^{\infty} (ax)^{k} \cdot F_{b}(k)\end{equation}
+
+\noindent Finally, a formula for the operation itself is given by \begin{equation}a \circ b = \sum_{k=0}^{\infty} a^{k+1} x^k b_k\label{sigconv}\end{equation} with each value of the sequence given by \begin{equation}(a \circ b)(n) = \sum_{k=0}^{n} a_{n-k}^{k+1}b_{k}\end{equation}
+
+\noindent We also have a curious identity in \begin{equation}d \circ F_g = dF_{d \circ g}\end{equation}
+
+\subsection{Right and left inverses}
+
+With a bit of manipulation (solved in the same way as  Eq (5)) we can derive an inverse which computes either a or b in terms of $a \circ b$. First, we have the \textit{left inverse} which computes a left operand, denoted $\backslash$: \begin{equation}(a \backslash b)_{n} = \frac{a_{n} - \displaystyle \sum_{k=0}^{n-1} (a \backslash b)_{n-k}^{k+1} b_{k}}{b_{0}}\end{equation}
+
+\noindent Next, we have the \textit{right inverse} which computes a right operand, denoted $/$: \begin{equation}(a / b)_{n} = \frac{a_{n} - \displaystyle \sum_{k=0}^{n-1} b_{n-k}^{k+1} (a/b)_{k}}{b_{0}^{n+1}}\end{equation}
+
+\noindent Because each inverse is unique, we can conclude that $\circ$ is not commutative. Furthermore, we may compare it to deconvolution, the inverse of convolution: \begin{equation}(a \div b)_{n} = \frac{a_{n} - \displaystyle \sum_{k=0}^{n-1}  b_{n-k} \cdot (a \div b)_{k}}{b_{0}}\end{equation}
+
+\noindent With convolution as an ansatz, this new operation will be referred to as \textbf{signature convolution}.
+
+\subsection{The signature left near-ring}
+
+For the system $(D, \oplus, 0, \circ, 1)$ to satisfy the near-ring axioms, it must meet the following three conditions:
+
+\begin{itemize}
+\item D is a group under the additive operation $\oplus$
+\item D is a semigroup under the multiplicative operation $\circ$
+\item Multiplication distributes on either the right or left
+\end{itemize}
+
+\noindent The only property of this system which has not been proven is distributivity. Left-distributivity can be proven by the assumed equality:
+
+\begin{align*}
+a \circ (b \oplus c) &= (a \circ b) \oplus (a \circ c)\\
+a \circ b + a \circ c - a \circ bcx &= a \circ b + a \circ c - (a \circ b)(a \circ c)x\\
+a \circ bcx &= (a \circ b)(a \circ c)x\\
+\sum_{k=0}^{\infty} a^{k+1} x^k bcx_k &= (\sum_{k=0}^{\infty} a^{k+1} x^k b_k)(\sum_{k=0}^{\infty} a^{k+1} x^k c_k)x\\
+a \sum_{k=0}^{\infty} (ax)^k bcx_k &= a^2 x (\sum_{k=0}^{\infty} (ax)^k bc_k)\\
+\sum_{k=0}^{\infty} (ax)^k bcx_k &= ax (\sum_{k=0}^{\infty} (ax)^k bc_k)\\
+\sum_{k=0}^{\infty} (ax)^k bcx_k &= \sum_{k=0}^{\infty} (ax)^{k+1} bc_k\\
+\sum_{k=0}^{\infty} (ax)^k bc_{k-1} &= \sum_{k=0}^{\infty} (ax)^{k+1} bc_k\\
+\sum_{k=0}^{\infty} (ax)^{k+1} bc_k &= \sum_{k=0}^{\infty} (ax)^{k+1} bc_k
+\end{align*}
+
+\noindent It follows that its right inverse right-distributes: \begin{equation}a \circ b = d \quad a \circ c = e \quad a \circ(b \oplus c) = d \oplus e \quad \Rightarrow \quad (d \oplus e) / a = d/a \oplus e/a = b \oplus c\end{equation}
+
+\noindent Right-distributivity and left inverse distributivity can be disproven by any number of random test cases. There are conditions where signature convolution appears to commute, but such cases are easily explained via its associativity and factorization. Take for example \begin{equation}[1, 1] \circ [1, 2, 2, 1] = [1, 1] \circ [1, 1] \circ [1, 1] = [1, 2, 2, 1] \circ [1, 1]\end{equation}
+
+\noindent With left-distributivity, signature addition and convolution together form a left near-ring over the integer sequences. This can form a left near-field as its inverse commutes and signature convolution forms a group under the rationals, reals, and complex numbers. This may also be enumerated by factorization, by observing that \begin{equation}a^{(x)} \circ a^{(y)} \hspace{1mm} = \hspace{1mm} a^{(x+1)} \circ a^{(y-1)} \hspace{1mm} = \hspace{1mm} a^{(x-1)} \circ a^{(y+1)}\end{equation} where the parenthetical exponents are the signature power of the sequence. Then for $x = y = 0$ we get \begin{equation} a^{(0)} \circ a^{(0)} = a^{(1)} \circ a^{(-1)} \hspace{1mm} = \hspace{1mm} a^{(-1)} \circ a^{(1)}\end{equation} which satisfies the last of the near-field axioms.
+
+\iffalse
+% THIS IS BROKEN BY CHANGING AERATION
+\subsection{Aerated signature convolution}
+
+\noindent We can combine the process of signature convolution with signature aeration for the following identity:
+
+\begin{equation} \sum_{k=0}^{n} d_{k}^{n-ak} \cdot F_g(n-ak) = F_{{\displaystyle \sum_{k=0}^{\infty} A_{d^{k+1}}^a} x^k g_k}(n) \end{equation}
+\fi
+
+\section{Signatures and Cantor's diagonal argument}
+
+\subsection{A peculiar matrix representation}
+
+Though we have seen the near-ring of signatures used to solve internal problems, it was originally motivated by a peculiar representation of Cantor's diagonal argument as a power series. It begins with an infinite set, whose cardinality is $\sigma$, which we conjecture to be a "complete" set of the base-$b$ real numbers. By the diagonal argument, it is always possible to define at least one element which \textit{must} be real but is not present in the set. We add this set of "absent" real numbers, and include it as the second element of the series. This process may be repeated indefinitely, but by induction will never yield all real numbers.\\
+
+\noindent I chose to represent this recursively as \begin{equation}C(0) = \sigma \quad C(n) = C(n-1) + b^{C(n-1)} \qquad \lim_{n \rightarrow \infty} C(n) < \aleph_1 \end{equation}
+
+\noindent Next, we take the finite difference of this function, $C'$, and we construct a matrix which satisfies
+
+\begin{equation}\begin{matrix}
+    1 \\
+    1 \\
+    1  & 1 \\
+    1 & 1 & 1 \\
+    1 & 1 & 1 & 1 \\
+    \dots & \dots & \dots & \dots & \dots \\
+\end{matrix}
+M(0, 0) = 1 \hspace{2mm} M(n, y) = p : b^{\hspace{1mm} \displaystyle \sum_{k=0}^{n-1} M(n, k) \cdot C'(k)} = C'(n) \qquad\end{equation}\\
+
+\noindent There is an interesting equivalence between the rows of this matrix and the base-b logarithm of $C'$; if we state that \begin{equation}b < \sigma \hspace{1mm} \implies \hspace{1mm} \log_b \sigma = \sigma\end{equation} then it is true that \begin{equation}\displaystyle \sum_{k=0}^{n-1} M(n, k) \cdot C'(k) = log_b(C'(n))\end{equation}
+
+\noindent We may take this a step further, and define a linear logarithm-like function, which would allow us to express iteration of this \textit{pseudologarithm} as matrix powers according to the following modified matrix multiplication formula (assuming that each of these matrices is padded with zeroes to make matrix multiplication valid):
+
+$$MN (n, y) = \sum_{k=0}^{\infty} M(n, k) \cdot N(k, y)$$
+
+\begin{equation}\begin{bmatrix}
+    1 \\
+    1 \\
+    1  & 1 \\
+    1 & 1 & 1 \\
+    1 & 1 & 1 & 1 \\
+    \dots & \dots & \dots & \dots \\
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix}
+    1 \\
+    1 \\
+    2  \\
+    3 & 1 \\
+    4 & 2 & 1\\
+    \dots & \dots & \dots \\
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix}
+    1\\
+    1\\
+    2 \\
+    4\\
+    7 & 1\\
+    \dots & \dots\\
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix}
+    1 \\
+    1 \\
+    2\\
+    4\\
+    8\\
+    \dots\\
+\end{bmatrix}\end{equation}\\\\
+
+\noindent This process is similar to the one exhibited by Mats Granvik and Gary Adamson (See \textit{The invert transform, Bell numbers, Pascal triangle...}), in which they compute the Bell numbers by the powers of a modified Pascal's Triangle. In this case, however, we will add a final step and produce a sequence from the partial sums of the remaining column of $M$. This yields \begin{equation}\sum_{k=0}^{n} M^{k}(k, 0) = F_2(n)\end{equation}
+
+\subsection{Transforming signatures}
+
+We may define a signature-based recursive function $C_d$, and compute it as \begin{equation}C_d(0) = \sigma \qquad C_d(n) = C_d(n-1) + b^{\hspace{1mm} \displaystyle \sum_{k=1}^{n} C'_d(n-k) \cdot \sum_{t=0}^{k-1} d_{t}}\end{equation}
+
+\noindent where $C_d'$ is the finite difference of $C_d$. Then the matrix $M_d$ is given \begin{equation}M_{d}(0,0) = 1 \qquad M_{d}(n, y) = \sum_{k=0}^{n-y-1} d_{k}\end{equation} and its summation is \begin{equation} \sum_{k=0}^{n} M_{d}^{k}(k, 0)= F_{d+1}(n)\end{equation}
+
+\noindent More curious still, an antidiagonal summation algorithm exists such that \begin{equation}\sum_{k=0}^{n} M_{d}^{n-k}(k, 0) = F_{dx + 1}(n)\end{equation}
+
+\subsection{Explaining the vertical identity}
+
+\noindent Originally, the matrix is defined \begin{equation}M_d(0,0) = 1 \quad M_d(n,y) = \sum_{k=0}^{n-y-1} d_k = dF_1 (n - y - 1)\end{equation}
+
+\noindent Note the substitution of summation for convolution by $F_1$. From this construction and matrix multiplication, we have the original identity \begin{equation}\sum_{k=0}^{n} M_d^{k} (k, 0) = F_{1+d} (n)\end{equation}
+
+\noindent However, with a slight alteration to the matrix: \begin{equation}M_d^{\prime}(0, 0) = 1 \quad M_d^{\prime}(n,y) = d_{n-y-1}\end{equation}
+
+\noindent Then vertical summation instead gives \begin{equation}\sum_{k=0}^{n} M_d^{\prime k} (k, 0) = F_d (n)\end{equation}
+
+\noindent The relationship between $M$ and $M^{\prime}$ is given by \begin{equation}M_d = M_{dF_1}^{\prime}\end{equation}
+
+\noindent By again substituting convolution in place of summation, we have \begin{equation}\sum_{k=0}^{n} M_d^k (k, 0) = \sum_{k=0}^{n} M_{dF_1}^{\prime k} (k, 0) = F_1 F_{dF_1} (n) = F_{1 \oplus dF_1}(n) = F_{1 + d}(n)\end{equation}
+
+\subsection{Explaining the antidiagonal identity}
+
+\noindent The original antidiagonal identity of the matrix is \begin{equation}\sum_{k=0}^{n} M_d^{n-k} (k, 0) = F_{1+dx} (n)\end{equation}
+
+\noindent However, with $M'$, this identity becomes \begin{equation}\sum_{k=0}^{n} M_{d}^{\prime n-k} (k, 0) = F_{1+dx - dx^{2}}(n)\end{equation}
+
+\noindent While the signature term may be written in terms of signature addition as $ 1 \oplus dx$, we are more interested in writing it as \begin{equation}1 + dx(1-x)= 1 + \frac{dx}{F_1}\end{equation}.
+
+\noindent Given the relationship between $M$ and $M^{\prime}$, this quickly explains the original antidiagonal identity: \begin{equation}\sum_{k=0}^{n} M_d^{n-k}(k,0) = \sum_{k=0}^{n} M_{dF_1}^{\prime n-k} (k, 0) = F_{1 + \frac{dF_1x}{F_1}}(n) = F_{1 + dx}(n)\end{equation}
+
+\subsection{A further generalization}
+
+While the construction $M$ is interesting, it can be viewed as a single case of a more general construction. Let $G$ be a set of signatures $[g_1, g_2, ..., g_p]$. Then let $S_d$ be defined as follows:
+
+$$ S_d^0(0,0) = 1 \hspace{4mm} S_d^0(1,0) = d_0 - 1 $$
+$$ S_d^0(n>1, y) = d_{n-y-1}$$
+$$ S_d^p(n,y) = \sum_{k=0}^{n} S_d^{p-1}(k,y) \cdot F_{g_p}(n-k)$$
+
+
+\noindent Then we have the identity \begin{equation}\sum_{k=0}^{n}(S_d^p)^{k+1} (k,0) =  F_{d + \displaystyle \bigoplus_{k=1}^{p} g_k}(n)\end{equation}
+
+\noindent This equals $F_{d+1}$ when $G = [1]$.\\
+
+\noindent There is also a generalization for antidiagonal summation in \begin{equation} \sum_{k=0}^{n} (S_d^p)^{n-k}(k, 0) =  F^{(2)}_{\left(-1 + \displaystyle \bigoplus_{k=1}^{p} g_k \right) \oplus dF_{-d}}(n)\end{equation}
+
+\noindent which equals $F_{dx + 1}$ when $G = [1]$.
+
+\section{Code}
+
+Code which implements the signature left near-ring may be viewed \href{https://github.com/cxr00/cxr/blob/master/cxr/math/snr.py}{on GitHub}.
+
+\pagebreak
+\section{References}
+
+\noindent Mats Granvik \& Gary W. Adamson. (2011 Feb 18).  The invert transform, Bell numbers, Pascal triangle, permanents, matrix mutliplication and matrix inversion, Catalan numbers. Retrieved from \href{https://mobiusfunction.wordpress.com/2011/02/18/the-invert-transform-bell-numbers-pascal-triangle-permanents-matrix-multiplication-and-matrix-inversion-catalan-numbers/}{MobiusFunction.wordpress.com} on Oct 2017.\\
+
+\noindent M. Bernstein \& N.J.A. Sloane. (2002 May 28). Some Canonical Sequences of Integers. Retrieved from \href{https://arxiv.org/pdf/math/0205301.pdf}{Arxiv} on Oct 2017.\\
+
+\noindent V. E. Hoggatt, Jr. \& Marjorie Bicknell. (1969). Diagonal Sums of Generalized Pascal Triangles. Retrieved from \href{http://www.mathstat.dal.ca/FQ/Scanned/7-4/hoggatt-a.pdf}{mathstat.dal.ca} on Oct 2017.
+
+\end{document}

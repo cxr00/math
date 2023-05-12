@@ -1,0 +1,374 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{environ}
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+\setcounter{secnumdepth}{3}
+
+\usepackage[normalem]{ulem}
+
+\NewEnviron{scaled_eq}{
+    \begin{equation}
+    \scalebox{1.3}{$\BODY$}
+    \end{equation}
+    }
+
+\title{\Large More on the Signature Function}
+\author{Conrad sen Kyne}
+\date{}
+
+\everymath{\displaystyle}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textbf{Abstract}
+\end{center}
+
+\noindent Some qualities of various constructions are studied in relation to the signature function and signature arithmetic. The connection between canonical objects and base interpretations is established. Finally, conjectures and open problems are offered.
+
+\tableofcontents
+
+\pagebreak
+
+\section{Arithmetic}
+
+\subsection{Addition (perturbed sequences)}
+
+Let some execution of the signature function for a signature $d$ be "perturbed" by adding some arbitrary value $p$ to it at some point $n$. This is expressed via the identity:
+
+$$F^{-1} (F_d + px^n) = d + \sum_{k=1}^{\infty} (-1)^{k+1} x^{nk - 1} p^k \cdot \left( 1 - x \cdot \bigoplus_{i=0}^{k} d \right)$$
+
+\noindent Note that this is only valid for values of n greater than 0. When $p$ is a one-beginning sequence, we can use the identity given from Eq. (18) of SNR part 1:
+
+$$F^{-1} (F_d + x^n F_g) = F^{-1} \left(1 + x(dF_d + x^{n-1} F_g) \right) = (dF_d + x^{n-1} F_g) F_{-(dF_d + x^{n-1} F_g)}$$
+
+\subsection{Subtraction}
+
+Let $d$ and $p$ be some signatures. Then the following identity holds:
+
+\begin{align*}
+g &= d \ominus p\\
+F_g(0) &= 1\\
+F_g(n \geq 1) &= d_{n-1} - p_{n-1} + \sum_{k=1}^{n-1} F_g(n-k) \cdot d_{k-1}\\
+\end{align*}
+
+\noindent This formula is memoized, so computing $F_g$ with this method is faster than computing $g$ followed by $F_g$\\
+
+\subsection{Convolution}
+
+Given two signatures $a$ and $b$, assuming you have computed either $F_a$ or $F_b$, the convolution $F_a F_b$ is computed thusly:
+
+\begin{align*}
+F_a F_b (0) &= 1\\
+F_a F_b (n) &= F_a(n) + \sum_{k=1}^{n} F_a F_b (n-k) \cdot b_{k-1}\\
+&= F_b(n) + \sum_{k=1}^{n} F_a F_b (n-k) \cdot a_{k-1}
+\end{align*}
+
+\noindent The two identities make sense considering the commutativity of $\oplus$. It's important to note that this is only more efficient when either $F_a$ or $F_b$ is already computed; performing $a \oplus b$ followed by $F_{a \oplus b}$ is otherwise faster.
+
+\section{Unique sequences}
+
+\subsection{Repsequences}
+
+A \textbf{repsequence} is a sequence which repeats each element a certain number of times. For example, [1, 1, 2, 2, 4, 4, 8, 8, 16, 16, ...] is a repsequence of the signature \{2\}. A repsequence is constructed via the closed form:
+
+$$\sum_{k=0}^{a-1} A_{F_d}^a x^k$$
+
+\noindent where $A$ is the aeration function and $a$ is the aeration coefficient. Then the signature of a repsequence is given by
+
+$$F^{-1} \left( \sum_{k=0}^{a-1} A_{F_d}^a x^k \right) = 1 + x^{a-1} A_{F_1 (d-1)}^a - x^a A_{F_1 (d-1)}^a = 1 \oplus x^{a-1} A_{F_1 (d-1)}$$
+
+\subsection{Self-similar signatures}
+
+Let us define a set $(t, g, r, p)$ with the following constraints:
+
+\begin{align*}
+t &\in \mathbb{R}\\
+g &\geq 1\\
+r &\in \{-1, 1\}\\
+p &\in \{0, 1\}
+\end{align*}
+
+\noindent This set represents the following function:
+
+$$q_0 = t \qquad q_n = F_q (n - g) \cdot r^{n+p}$$
+
+\noindent Signatures which obey this formula are called \textbf{self-similar}. For example, the signature produced by $(1, 1, 1, 1)$ is:
+
+$$(1, 1, 1, 1) = 1, 1, 1, 2, 4, 9, 21, 51, 127, 323, 835, ...$$
+
+\noindent Whereas the signature function of $(1, 1, 1, 1)$ is:
+
+$$F_{(1, 1, 1, 1)} = 1, 1, 2, 4, 9, 21, 51, 127, 323, 835, ...$$
+
+\noindent This is what makes a signature self-similar: the signature contains the solution to its own signature function.\\
+
+\noindent Not every self-similar signature produced is unique, however. Other than when $t = 0$, there are always three unique self-similar signatures produced by $(t, g, r,  p)$. This is because by definition $(t, g, 1, 0) = (t, g, 1, 1)$.\\
+
+
+\subsection{Noah's Diamond and self-similar sequences}
+
+The formula for the Noah's Diamond sequence of a sequence $S$ is given by:
+
+\begin{align*}
+N(S, a, b, c)_0 &= S_0\\
+N(S, a, b, c)_n &= aS_0 + bS_n + c \cdot \sum_{x=1}^{n-1} \sum_{k=0}^{x - 1} \binom{x-1}{k} \cdot \left( S_{k+1} + S_{n-x+k} \right)
+\end{align*}
+
+\noindent Then when we have $a=b=c=2$ and sequence $F_p$ for some integer $p$, we have:
+
+$$N(F_p, a, b, c)_{k \geq 1} = F^{-1}_{ N(F_p, a, b, c)} (k-1) \cdot (-1)^{k-1}$$
+
+\noindent These are not self-similar \textit{signatures}, but self-similar \textit{sequences}, in the sense that the sequence contains its signature, whereas a self-similar signature contains the result of its own signature function. This is a very subtle but important distinction.
+
+\subsection{Seeded sequences}
+
+\noindent Though the sequences we've viewed so far have primarily started with $1$, we may opt to begin them with an arbitrary \textbf{seed}:
+
+\begin{align*}
+~_s F_d (0 \leq n < |s|) &= s_n\\
+~_s F_d (n \geq |s|) &= \sum_{k=1}^{n}  ~_s F_d (n-k) \cdot d_{k-1}
+\end{align*}
+
+\noindent If two seeded sequences have seeds of the same length and the same signature, then we have the following identity:
+
+\begin{align*}
+~_s F_d + ~_h F_d = ~_{s + h} F_d\\
+~_s F_d - ~_h F_d = ~_{s - h} F_d\\
+\end{align*}
+
+\noindent Given two seeded sequences, we may convolve them to produce a third seeded sequence which involves the signature addition of the two sequences' signatures. First, we compute the new seed $K$ by performing the first few steps of sequence convolution:
+
+$$K_n = ~_a F_d \otimes ~_b F_g (n) \hspace{4mm} 0 \leq n < |ab|$$
+
+\noindent Then the remainder of the sequence may be computed with signature addition:
+
+$$~_a F_d \otimes ~_b F_g (n \geq |ab|) = ~_K F_{d \oplus g}(n)$$
+
+\subsection{Signatures of sieved matrices}
+
+Let $T_d$ be the power triangle of an two-digit signature. Then the sieving function is given by:
+
+$$S(M, s)(n, k) = M(n, sk)$$
+
+\noindent Then the signature of sieved $T_d$ is given by:
+
+$$F^{-1}(S(T_d, s)) = d_0 + d_1^s x^s F_{d_0^{(s-1)}}$$
+
+\noindent If the signature is arbitrary length and the sieve factor is 2, then we have:
+
+$$F^{-1}(S(M_d, 2)) = \sum_{k=0}^{\infty} d_{2k} x^k + x^2 \left( \sum_{k=0}^{\infty} d_{2k+1} x^k \right)^2 F_{\displaystyle \sum_{k=0}^{\infty} d_{2k} x^k}$$
+
+\section{Base sequences and diagonalised transposition products}
+
+The transposition product of two matrices $M_s$ and $M_g$, where $s$ and $g$ are signatures, is given as $M_s M_g^T$. From this, a diagonalisation matrix $R$ is constructed where $R(n,k) = M_s M_g^T (n-k, k)$ where $k \leq n$. Each row of $R$ is then interpreted as a base-$b$ number, producing a unique sequence. We then view the signature of that resultant sequence.\\
+
+\noindent The base interpretation of a matrix is a sequence which treats each row of the matrix as a number in a given base. It is expressible via the closed form:
+
+$$K_n = |R(n)| \hspace{4mm} B_{R}(n) = \sum_{k=0}^{K_n-1} b^k R (n, K_n - k - 1)$$
+
+\subsection{Signatures of base sequences}
+
+\noindent Note that for select identities, the operation $\cdot$ denotes pointwise multiplication, and $N$ is given by:
+
+$$N = \sum_{k=0}^{\infty} n_k x^{k+2} F_1^{k+1}$$
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+s & g & $F^{-1}(B_R)$\\
+\hline
+\{$n_0, n_1$\} & \{$n_2, n_3$\} & $n_0 b + n_2 + xb(n_1 n_3 - n_0 n_2)$\\
+\hline
+\{$1,1,n$\} & \{$1,1$\} & $b+1 + bnx^2 F_1$\\
+\hline
+\{$1,1$\} & \{$1,1,n$\} & $n(F_b - bx - 1) + b + 1$\\
+\hline
+\{$1, 1$\} & \{$1,1,n_0,n_1,...$\} & $F_b \cdot N + b + 1$\\
+\hline
+\{$1, 1, n_0, n_1, ...$\} & \{$1,1$\} & $bF_1 \cdot N + b + 1$\\
+\hline
+\{$1, 1, n$\} & \{$1,1,1$\} & $~_{b + nbx}F_{F_{b + (n-1)bx}}+1$\\
+\hline
+\{$1, 1, 1$\} & \{$1,1,2$\} & $~_{b + b(b+1)x}F_{F_{b + bx}}+ 1 - bx(b-1)$\\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Other base interpretations}
+
+\subsection{Generalised Stirling numbers}
+
+The $n$-Stirling numbers are one-beginning triangular matrices given by:
+
+$$S_{x,y}^n = 1 \hspace{4mm} S_{x,y}^n = S_{x-1,y-1}^n + (x+n-1) \cdot S_{x-1,y}^n$$
+
+\noindent The base interpretation sequence of a given Stirling triangle is given by:
+
+$$B_S (0) = 1 \hspace{4mm} B_S(i) = (b(i+n-1) + 1) \cdot B_S(i-1)$$
+
+\subsection{Base prisms of canonical prisms}
+
+A base interpretation prism of a prism $P$ with dimension $N$ is a prism $B_P$ with dimension $N-1$. Each element of $B_P$ is computed thusly:
+
+\begin{scaled_eq}
+B_P(r_0, ..., r_{N-2}) = B_{P(r_0, ..., r_{N-2})}
+\end{scaled_eq}
+
+\noindent The signature of $B_P$ depends on the signatures $[g_0, ..., g_{N-2}]$ which comprise $P$:
+
+\begin{scaled_eq}
+B_g = \displaystyle \bigoplus_{k=0}^{N-2} B_{g_k} \hspace{4mm} F_{B_P} =  F_{B_g}
+\end{scaled_eq}
+
+\subsection{Base sequences of sieved matrices}
+
+Let $S$ be the sieving function, and let $d$ be a signature of length 3 with all elements nonnegative and $d_2 \neq 0$. Then we have the following identity:
+
+$$B(S(M_d, 2), b)(k) = \frac{(d_0 b + d_1 \sqrt{b} + d_2)^k + (d_0 b - d_1 \sqrt{b} + d_2)^k}{2}$$
+
+% PROBABLE INCORRECT
+\iffalse
+\noindent If the length of $d$ varies and $b=1$, then we have:
+
+\begin{align*}
+s_0 &= \sum_{k=0}^{\infty} d_{2k}\\
+s_1 &= \sum_{k=0}^{\infty} d_{2k+1}\\
+B(S(M_d, 2), 1)(k) &= \frac{(s_0 + s_1)^k + (s_0 - s_1)^k}{2}\\
+\end{align*}
+\fi
+
+% OLD IDENTITIES BEFORE THE ABOVE CLOSED FORM
+\iffalse
+Then the following identities exist:
+
+$$F^{-1}_{B(S(M_{1, 1, 1}, 2), b)} = b \cdot B(S(M_{1, 1, 1}, 2), b-1) \cdot \left(1 - x(b-1) - x^2(b-2) \sum_{k=0}^{\infty} (b+1)^k x^k \right) + 1$$
+
+$$B(S(M_{1, 1, 2}, 2), b)(k) = \frac{(b+2+\sqrt{b})^k + (b+2-\sqrt{b})^k}{2} $$
+
+$$B(S(M_{1,2,1}, 2), b) = (1 - (b+1)x) F_{2(b+1) - x(b-1)^2}$$
+
+$$B(S(M_{1,2,2}, 2), b)(k) = \frac{(b + 2 + 2 \sqrt{b})^k + (b + 2 - 2 \sqrt{b})^k}{2}$$
+
+$$B(S(M_{2,1,1}, 2), b)(k) = \frac{(2b + 1 + \sqrt{b})^k + (2b + 1 - \sqrt{b})^k}{2}$$
+\fi
+% END OLD IDENTITIES
+
+\section{Decimal expansions of the signature function}
+
+For a signature $s$, treat the elements of $F_s$ as the digits of the mantissa of a base-$b$ number where $b$ is greater than every digit of $s$. In other words:
+
+$$\sum_{n=0}^{\infty} \frac{F_s(n)}{b^{|s| + n}} = \frac{1}{b^{|s|} - B_s}$$
+
+\noindent where $B_s$ is the base-$b$ interpretation of $s$ with $s_0$ as the most significant digit. This homomorphism between the signature function and rational numbers extends to signature addition:
+
+$$\sum_{n=0}^{\infty} \frac{F_{s \oplus r}(n)}{b^{|s| + |r| + n}} = \frac{1}{(b^{|s|} - B_s)(b^{|r|} - B_r)}$$
+
+\noindent If $F_s$ is seeded with a seed $g$, then the identity is instead:
+
+$$\sum_{n=0}^{\infty} \frac{~_g F_s(n)}{b^{|s| + n}} = \frac{B_P^{-1}}{b^{|s|} - B_s}$$
+
+\noindent with:
+
+$$P = g - \sum_{n=1}^{|s|} x^n s_{n-1} \cdot \sum_{k=0}^{|g|-n-1} g_k x^k \hspace{4mm} B_P^{-1} = \sum_{n=0}^{|P|-1} \frac{P(n)}{b^n}$$
+
+\noindent If the signature $s$ is infinite, then the result is typically zero. We may then modify the formula:
+
+$$\sum_{n=0}^{\infty} \frac{F_{s}(n)}{b^{n+1}}$$
+
+\noindent In many cases, the result either diverges or may form an irrational number (see \textbf{Conjecture 3}).
+
+\pagebreak
+
+\section{Interesting constructed triangles}
+
+Below is a collection of triangles which have interesting signatures. These triangles also vary according to their aeration coefficient. Note that the value of $y$ is always less than or equal to $n$.
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Triangle & Signature function\\
+\hline
+$K_d (n, y) = F_d(y)$  & $F_{1 \oplus x^a A_d^{a+1}}$\\
+\hline
+$Q_d (n, y) = F_d(n-y)$ & $F_{d \oplus x^a}$\\
+\hline
+$G_d(n, y) = F_d^{y+1} (n-y)$ & $F_{d + x^{a}}$\\
+\hline
+$B_d(n, y) = F_d^{n-y+1}(y)$ & $F_{1 + x^{a}A_d^{a+1}}$\\
+\hline
+$P_d(n, y) = d^y(n-y)$ & $F_{dx^a}$\\
+\hline
+$P_d^{\prime}(n, y) = d^{y+1}(n-y)$ & $dF_{d x^a}$\\
+\hline
+$J_d(n, y) = d^{n-y}(y)$ & $F_{A_d^{a+1}}$\\
+\hline
+$J_d^{\prime}(n, y) = d^{n-y+1}(y)$ & $A_d^{a+1} F_{A_d^{a+1}}$\\
+\hline
+$Q(0, 0) = 1$ & $F_{x^a + xA_{R_j}^2}$\\
+$Q(n, y) = Q(n-1, y-1) + jQ(n-1, y+1)$ & $R_j(n) = Catalan(n) \cdot j^{n+1}$\\
+\hline
+$T(n, 0) = 1 \hspace{4mm} T(n, 1) = n$ & $F_{1 + x^a A_C^{a+1}}$\\
+$T(n, y) = T(n,y-1) + T(n-1, y)$ &\\
+\hline
+$H_d (n, y) = F_d(n+y)$ & $\left(1 + \sum_{k=1}^{\infty} d_{k-1} k x^{ak+1} \right) \otimes F_{d \oplus x^{a-1}A_d^{a}}$\\
+\hline
+\end{tabular}
+\end{center}
+
+\pagebreak
+
+\section{Signature arithmetic and the OEIS}
+
+Many sequences in the OEIS are expressible in terms of the signature function and signature arithmetic due to their close relationship with linear recurrences and generating functions. This list is not meant to be exhaustive, but to showcase select generating functions in terms of what's been covered under SNR.
+
+\begin{align*}
+A000041 &= F_{\displaystyle \bigoplus_{k=0}^{\infty} x^k}\\
+A000930(n) &= F_{\displaystyle \bigoplus_{k=0}^{\infty} x^{3k}}(n+1)\\
+A001006 &= F_{(1, 1, 1, 0)}\\
+A025250 &= (0, 2, 1, 0)\\
+A070933 &= F_{\displaystyle \bigoplus_{k=0}^{\infty} 2x^k}\\
+A088305 &= F_{\displaystyle \bigoplus_{k=0}^{\infty} (k+1)x^k}\\
+A090764 &= F_{2 \oplus \displaystyle \bigoplus_{k=1}^{\infty} x^k}\\
+A126120 &= F_{(0, 1, 1, 0)}\\
+A158943(n) &= F_{\displaystyle \bigoplus_{k=0}^{\infty} (k+1)x^{2k}}(n+1)\\
+\end{align*}
+
+\pagebreak
+
+\section{Conjectures}
+
+\textbf{1.} Every signature whose sequence produces only prime numbers is infinite.\\
+
+\noindent \textbf{2.1} (weak) Every finite signature whose sequence is acyclic produces at least one composite number; or: Every U-representation from a finite signature becomes composite when 1 or more zeroes are added.\\
+
+\noindent \textbf{2.2} (strong) Every finite signature whose sequence is acyclic produces infinite composite numbers; or: Every U-representation from a finite signature contains infinite composites when 1 or more zeroes are added.\\
+
+\noindent \textbf{3.} Every decimal expansion of the signature function which produces an irrational number is formed via an infinite signature.
+
+\section{Open problems and questions}
+
+\textbf{1.} What is the closed form for the signature of a sieved matrix when the sieve factor $s$ is greater than 2?\\
+
+\noindent \textbf{2.} What is the closed form for the signature of a diagonalised transposition product for arbitrary $s$ and $g$?\\
+
+\noindent \textbf{3.} Under what circumstances (besides the signature function itself) does signature convolution naturally appear?\\
+
+\noindent \textbf{4.} How does the relationship between signature arithmetic and the matricial right near-ring (SNR 2.1.5) emerge?\\
+
+\noindent \textbf{5.} What is the relation between the representation of Cantor's diagonal argument (SNR 1.4.1) and signature arithmetic? What is the significance of the sen matrix?\\
+
+\end{document}

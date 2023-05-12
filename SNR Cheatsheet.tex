@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\subsection{Sequence operations}
+
+$$ (a+b)_n = a_n + b_n \qquad ab_n = \sum_{k=0}^{n} a_{n-k} b_k $$
+
+\subsection{The signature function and the signature left near-ring}
+
+$$F_{d}(0) = 1 \qquad  F_{d}(n) = \sum_{k=1}^{n} F_{d}(n-k) \cdot d_{k-1} \qquad F_{d}^{-1}(n) = d_{n+1} - \sum_{k=1}^{n} d_{n-k} \cdot F_{d}^{-1}(k-1)$$
+
+$$a \oplus b = F^{-1} (F_a \otimes F_b) = a + b - abx \qquad a \circ b = \sum_{k=0}^{n} a^{k+1} x^k b_k$$
+
+\subsection{The general signature function and prismatic convolution}
+
+\noindent Let $T$ and $M$ be matrices with $N$ and $K$ dimensions respectively.
+
+$$F_{T} (n) = \sum_{r_0 + r_1 + ... + r_{N-1} = n} T(r_0, r_1, ..., r_{N-1})$$
+
+$$T \times M (r_0, r_1, ... r_{N + K - 2}) = \left( T(r_0, r_1, ..., r_{N - 2}) \otimes M (r_{N-1}, r_N, ..., r_{N + K - 3}) \right) (r_{N + K - 2})$$
+
+$$F_{T \times M} = F_T \otimes F_M$$
+
+\noindent If $T$ and $M$ are one-beginning, we also have:
+
+$$F_{T \times M}^{-1} = F_T^{-1} \oplus F_M^{-1}$$
+
+\subsection{General signature convolution}
+
+\noindent Let $T$ be given by the following prism:
+
+$$T =  T_{g_0} \times ... \times T_{g_{N-2}}$$
+
+\noindent Where $T_g$ is a power triangle whose signature is $g$.
+
+$$F_{T \circ S}(n) = \sum_{r_0 + ... + r_{N-1} = n} T(r_0, ... , r_{N-1}) \cdot \prod_{k=0}^{N-2} F_{S_k} (r_k) $$
+
+\subsection{The signature dot product}
+
+$$T \circ S = \bigoplus_{k=0}^{N-2} g_k \circ S_k$$
+
+\end{document}
