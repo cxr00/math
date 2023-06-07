@@ -37,7 +37,7 @@
 \textbf{Abstract}
 \end{center}
 
-\noindent Some qualities of various constructions are studied in relation to the signature function and signature arithmetic. The connection between canonical objects and base interpretations is established. Finally, conjectures and open problems are offered.
+\noindent Some qualities of constructions are studied in relation to the signature function and arithmetic. The connection between canonical objects and base interpretations is established. Finally, conjectures and open problems are offered.
 
 \tableofcontents
 
@@ -54,6 +54,28 @@ $$F^{-1} (F_d + px^n) = d + \sum_{k=1}^{\infty} (-1)^{k+1} x^{nk - 1} p^k \cdot 
 \noindent Note that this is only valid for values of n greater than 0. When $p$ is a one-beginning sequence, we can use the identity given from Eq. (18) of SNR part 1:
 
 $$F^{-1} (F_d + x^n F_g) = F^{-1} \left(1 + x(dF_d + x^{n-1} F_g) \right) = (dF_d + x^{n-1} F_g) F_{-(dF_d + x^{n-1} F_g)}$$
+
+\subsection{Adding a constant or sequential term per iteration}
+
+Suppose we modify the signature function such that a constant term $C$ is added:
+
+$$F'_d (n) = C + \sum_{k=1}^{n} F'_d (n-k) \cdot d_{k-1}$$
+
+\noindent Then the signature of that modified function is:
+
+$$F^{-1}(F'_d) = CF_{1 - C} \oplus d$$
+
+\noindent Suppose instead that C is a length-$r$ sequence:
+
+$$F'_d (n) = C_{(n-1) \bmod r} + \sum_{k=1}^{n} F'_d (n-k) \cdot d_{k-1}$$
+
+\noindent Then instead we have:
+
+$$F^{-1}(F'_d) = CF_{x^{r-1} - C} \oplus d$$
+
+\noindent If C is infinite, then we simply have:
+
+$$F^{-1}(F'_d) = CF_{-C} \oplus d = F^{-1} (1 + Cx) \oplus d$$
 
 \subsection{Subtraction}
 
@@ -289,7 +311,13 @@ $$P = g - \sum_{n=1}^{|s|} x^n s_{n-1} \cdot \sum_{k=0}^{|g|-n-1} g_k x^k \hspac
 
 $$\sum_{n=0}^{\infty} \frac{F_{s}(n)}{b^{n+1}}$$
 
-\noindent In many cases, the result either diverges or may form an irrational number (see \textbf{Conjecture 3}).
+\noindent In many cases, the result either diverges or may form an irrational number (see \textbf{Conjecture 3}).\\
+
+\noindent There is also a closed form for the normal convolution of two signatures:
+
+$$\sum_{n=0}^{\infty} \frac{F_{dg}(n)}{b^{|dg| + n}} = \frac{1}{(b^{|d|} - B_d) \cdot b^{|g|-1} - B_{d \cdot (g-1)}} = \frac{1}{b^{|dg|} - B_d \cdot (b^{|g|-1} + B_{g-1})}$$
+
+\noindent Note that due to the commutativity of sequence convolution, the above identity commutes (ie you can swap the locations of $d$ and $g$ for the same result).
 
 \pagebreak
 
