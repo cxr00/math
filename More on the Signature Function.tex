@@ -101,6 +101,16 @@ F_a F_b (n) &= F_a(n) + \sum_{k=1}^{n} F_a F_b (n-k) \cdot b_{k-1}\\
 
 \noindent The two identities make sense considering the commutativity of $\oplus$. It's important to note that this is only more efficient when either $F_a$ or $F_b$ is already computed; performing $a \oplus b$ followed by $F_{a \oplus b}$ is otherwise faster.
 
+\subsection{Derivative of the signature function}
+
+By treating the signature function as a generating function, we can take its derivative according to the power rule. In short:
+
+$$F'_d(n) = (n+1) \cdot F_d(n+1)$$
+
+\noindent The derivative can be represented by the identity:
+
+$$F'_d = \left(d + \sum_{k=1}^{\infty} k x^k d_k \right) \otimes F_d^2$$
+
 \section{Unique sequences}
 
 \subsection{Repsequences}
@@ -377,7 +387,7 @@ A158943(n) &= F_{\displaystyle \bigoplus_{k=0}^{\infty} (k+1)x^{2k}}(n+1)\\
 
 \pagebreak
 
-\section{Conjectures}
+\section{Conjectures and open problems}
 
 \textbf{1.} Every signature whose sequence produces only prime numbers is infinite.\\
 
@@ -387,7 +397,9 @@ A158943(n) &= F_{\displaystyle \bigoplus_{k=0}^{\infty} (k+1)x^{2k}}(n+1)\\
 
 \noindent \textbf{3.} Every decimal expansion of the signature function which produces an irrational number is formed via an infinite signature.
 
-\section{Open problems and questions}
+\begin{center}
+\rule{4cm}{0.4pt}
+\end{center}
 
 \textbf{1.} What is the closed form for the signature of a sieved matrix when the sieve factor $s$ is greater than 2?\\
 
